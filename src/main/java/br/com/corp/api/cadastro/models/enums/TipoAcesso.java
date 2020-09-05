@@ -2,8 +2,7 @@ package br.com.corp.api.cadastro.models.enums;
 
 public enum TipoAcesso {
     USUARIO(0),
-    ADM(1),
-    GERAL(2);
+    ADM(1);
 
     private int value;
 

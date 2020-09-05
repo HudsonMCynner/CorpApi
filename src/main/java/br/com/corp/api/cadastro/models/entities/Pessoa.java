@@ -1,6 +1,7 @@
 package br.com.corp.api.cadastro.models.entities;
 
 
+import br.com.corp.api.cadastro.models.enums.TipoAcesso;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,10 @@ public class Pessoa implements Serializable {
     @Column(length = 20, nullable = false)
     @NotNull
     private String senha;
+
+    @Column
+    @NotNull
+    private TipoAcesso tipoAcesso = TipoAcesso.USUARIO;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_perfil", referencedColumnName = "id")

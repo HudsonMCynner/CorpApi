@@ -30,10 +30,6 @@ public class Perfil implements Serializable {
     @NotNull
     private String steamId;
 
-    @Column
-    @NotNull
-    private TipoAcesso tipoAcesso = TipoAcesso.USUARIO;
-
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String cfg;
