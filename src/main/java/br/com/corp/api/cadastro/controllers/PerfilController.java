@@ -24,7 +24,7 @@ public class PerfilController {
     private final Environment environment;
 
     @PostMapping("/{id}/{cfgNumero}/upload")
-    public ResponseEntity salvarArquivo (@RequestParam("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("cfgNumero") Integer cfgNumero) throws IOException {
+    public ResponseEntity salvarCfg (@RequestParam("file") MultipartFile file, @PathVariable("id") Long id, @PathVariable("cfgNumero") Integer cfgNumero) throws IOException {
         String diretorio = environment.getProperty("file.directory");
 
         File folder = new File(diretorio);
@@ -39,7 +39,15 @@ public class PerfilController {
         file.transferTo(folder);
 
         Perfil perfil = perfilRepository.getOne(id);
-        perfil.setCfg(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        if (cfgNumero == 1) {
+            perfil.setCfg1(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        }
+        if (cfgNumero == 2) {
+            perfil.setCfg2(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        }
+        if (cfgNumero == 3) {
+            perfil.setCfg3(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        }
         perfilRepository.save(perfil);
 
         return ResponseEntity.ok().build();
