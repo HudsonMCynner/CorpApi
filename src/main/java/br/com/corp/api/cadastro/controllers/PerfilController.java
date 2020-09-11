@@ -45,9 +45,32 @@ public class PerfilController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/download")
-    public ResponseEntity downloadArquivo (@RequestParam("fileName") String fileName) throws IOException {
-        File file = new File(fileName);
+    @PostMapping("/{id}/avatar/upload")
+    public ResponseEntity salvarAvatar (@RequestParam("file") MultipartFile file, @PathVariable("id") Long id) throws IOException {
+        String diretorio = environment.getProperty("file.directory");
+
+        File folder = new File(diretorio);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        folder = new File(diretorio + "\\" + id);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        folder = new File(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        file.transferTo(folder);
+
+        Perfil perfil = perfilRepository.getOne(id);
+        perfil.setAvatar(diretorio + "\\" + id + "\\" + file.getOriginalFilename());
+        perfilRepository.save(perfil);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/avatar/download")
+    public ResponseEntity downloadArquivo (@RequestParam("id") Long id, @RequestParam("fileName") String fileName) throws IOException {
+        String diretorio = environment.getProperty("file.directory");
+        File file = new File(diretorio + "\\" + id + "\\" +fileName);
 
         return ResponseEntity.ok(new FileResponse(file.getName(), "cfg", file.length(), Files.readAllBytes(file.toPath()), null));
     };
