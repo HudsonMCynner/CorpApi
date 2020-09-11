@@ -32,5 +32,9 @@ public class Perfil implements Serializable {
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    private String avatar;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String cfg;
 }
